@@ -39,6 +39,10 @@ A critical aspect for successful project transfer is the timing of the initial d
 
 To achieve this, the demo code includes a step to send a reboot command to the display immediately before initiating the calls to `lumen_project_update_send_data()`. This guarantees that the display is in the optimal state for receiving the update. This reboot command is sent only once at the beginning of the transfer process.
 
+> Alternatively, you can trigger a reboot by using the **hardware reset pins** available on the display. This involves briefly shorting the reset pin to ground to manually restart the device. This method ensures the display restarts, even without using serial commands.
+
+> When using the serial reboot method, it is **very important** to define the `REBOOT_ADDRESS` to match the address of the **System Variable Reboot** in the currently running project on the display (i.e., the project loaded before starting the transfer). If this address is incorrect, the reboot command will not be recognized, and the display will not restart, causing the transfer to fail.
+
 ---
 
 ## Project File Information

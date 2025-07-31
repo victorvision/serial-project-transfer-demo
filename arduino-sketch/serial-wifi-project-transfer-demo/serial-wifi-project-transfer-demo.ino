@@ -9,6 +9,8 @@
 #define TXD2 17 // TX Pin for display communication
 
 // --- Wi-Fi Network Configurations ---
+
+
 const char* ssid = "YOUR_WIFI_NETWORK_NAME";    // Replace with your Wi-Fi network name (SSID)
 const char* password = "YOUR_WIFI_PASSWORD"; // Replace with your Wi-Fi password
 
@@ -16,11 +18,19 @@ const char* password = "YOUR_WIFI_PASSWORD"; // Replace with your Wi-Fi password
 // Define your project links here.
 // To select a project, change the value of SELECTED_PROJECT_INDEX.
 const char* PROJECT_URLS[] = {
-  "http://example.com/project1.lumen", // Project 1 (current)
-  "http://example.com/project2.lumen", // Project 2 (generic)
-  "http://example.com/project3.lumen", // Project 3 (generic)
-  "http://example.com/project4.lumen", // Project 4 (generic)
-  "http://example.com/project5.lumen"  // Project 5 (generic)
+  // --- Projects for P10600-070T-L0101 Display (7.0 inch) ---
+  "https://github.com/victorvision/serial-project-transfer-demo/raw/915f6d5d74e98f917a6f02f2aeee89c1bfaa0499/compiled-projects/P10600-070T-L0101/simple-led-compiled-project/internal_project.lumen",    // 0: Simple LED Demo
+  "https://github.com/victorvision/serial-project-transfer-demo/raw/915f6d5d74e98f917a6f02f2aeee89c1bfaa0499/compiled-projects/P10600-070T-L0101/led-rgb-compiled-project/internal_project.lumen",        // 1: LED RGB Demo
+  "https://github.com/victorvision/serial-project-transfer-demo/raw/915f6d5d74e98f917a6f02f2aeee89c1bfaa0499/compiled-projects/P10600-070T-L0101/distance-sensor-compiled-project/internal_project.lumen", // 2: Distance Sensor Demo
+  "https://github.com/victorvision/serial-project-transfer-demo/raw/915f6d5d74e98f917a6f02f2aeee89c1bfaa0499/compiled-projects/P10600-070T-L0101/servo-motor-compiled-project/internal_project.lumen",    // 3: Servo Motor Demo
+  "https://github.com/victorvision/serial-project-transfer-demo/raw/915f6d5d74e98f917a6f02f2aeee89c1bfaa0499/compiled-projects/P10600-070T-L0101/smart-home-compiled-project/internal_project.lumen",    // 4: Smart Home Demo
+
+  // --- Projects for P48272-043T-L0101 Display (4.3 inch) ---
+  "http://example.com/P48272-043T-L0101/demo1.lumen", // 5: Generic Demo 1 (Placeholder)
+  "http://example.com/P48272-043T-L0101/demo2.lumen", // 6: Generic Demo 2 (Placeholder)
+  "http://example.com/P48272-043T-L0101/demo3.lumen", // 7: Generic Demo 3 (Placeholder)
+  "http://example.com/P48272-043T-L0101/demo4.lumen", // 8: Generic Demo 4 (Placeholder)
+  "http://example.com/P48272-043T-L0101/demo5.lumen"  // 9: Generic Demo 5 (Placeholder)
 };
 const int NUM_PROJECT_URLS = sizeof(PROJECT_URLS) / sizeof(PROJECT_URLS[0]);
 
@@ -109,6 +119,7 @@ void rebootDisplay() {
   rebootPacket.data._bool = true;
   lumen_write_packet(&rebootPacket); // Sends the reboot command
   Serial.println("Reboot command sent. Starting data transfer...");
+  delay(200);
 }
 
 // Manages project file download via HTTP
@@ -155,7 +166,7 @@ void transferProjectData(WiFiClient& client, int totalFileSize) {
           bytesReadTotal += bytesReadThisChunk;
           if (currentReadBuffer == bufferA) bufferA_is_filled = true;
           else bufferB_is_filled = true;
-          Serial.printf("Read %d bytes from HTTP. Total: %lu/%d bytes.\n", bytesReadThisChunk, bytesReadTotal, totalFileSize);
+          Serial.printf("Read %d bytes from HTTP. Total: %zu/%d bytes.\n", bytesReadThisChunk, bytesReadTotal, totalFileSize);
         } else if (bytesReadThisChunk == 0) {
           // End of HTTP stream or temporarily no data
           if ((totalFileSize != -1 && bytesReadTotal >= totalFileSize) || !client.connected()) {
@@ -206,7 +217,7 @@ void transferProjectData(WiFiClient& client, int totalFileSize) {
         Serial.println("All file data processed and buffers emptied.");
     }
   }
-  Serial.printf("Total of %lu project bytes received and processed.\n", bytesReadTotal);
+  Serial.printf("Total of %zu project bytes received and processed.\n", bytesReadTotal);
 }
 
 // Finalizes the Lumen project update process
@@ -234,6 +245,7 @@ void setup() {
 
   // --- Step 1: Get total file size (pre-download) ---
   HTTPClient httpPreDownload;
+  httpPreDownload.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
   httpPreDownload.begin(projectFileUrl);
   Serial.printf("Starting pre-download to get file size: %s\n", projectFileUrl);
   int httpCodePreDownload = httpPreDownload.GET();
@@ -256,6 +268,7 @@ void setup() {
 
   // --- Step 3: Reopen HTTP connection for actual data transfer ---
   HTTPClient httpTransfer; // New HTTPClient instance for transfer
+  httpTransfer.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
   httpTransfer.begin(projectFileUrl);
   Serial.printf("Reopening HTTP connection for data transfer: %s\n", projectFileUrl);
   int httpCodeTransfer = httpTransfer.GET(); // Get the file again for a fresh stream
