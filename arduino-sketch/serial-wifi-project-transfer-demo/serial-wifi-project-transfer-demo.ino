@@ -1,3 +1,24 @@
+/*
+  ⚠ DISCLAIMER
+
+  This project was developed exclusively for demonstration purposes.
+  Its primary objective is to showcase the project transfer functionality 
+  using the Lumen Protocol library in a controlled environment.
+
+  It is NOT intended for use in production or real-world applications.
+  The implementation lacks secure communication mechanisms, such as:
+    - Encryption
+    - Authentication
+    - Data validation
+
+  As such, no guarantees are provided regarding the security, reliability, 
+  or suitability of this code for deployment in commercial products or 
+  production systems.
+
+  Use is strictly limited to educational, experimental, or demonstration scenarios.
+*/
+
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <HTTPClient.h>

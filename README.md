@@ -4,6 +4,15 @@ This repository contains a demonstration project showcasing how to transfer a co
 
 ---
 
+> ⚠ **DISCLAIMER**  
+> This project was developed exclusively for demonstration purposes. Its main objective is to illustrate the use of the **Lumen Protocol** library's project transfer functionalities in a controlled environment.
+> 
+> This project **was not designed for use in production environments or real-world applications**. It does not include robust security systems for web communication, such as **encryption**, **authentication**, or **data validation**.
+> 
+> Therefore, we do not offer any guarantees regarding the **security**, **reliability**, or **suitability** of this project for production or commercial use. It is intended solely for **educational**, **testing**, and **demonstration** purposes of the library's capabilities.
+
+---
+
 ## Why This Demo Is Important
 
 This feature is crucial for scenarios requiring remote project updates. In such cases, transferring the project through conventional methods, like using an SD Card, is often not feasible or practical. This demo provides a robust solution for deploying new display project updates over a network.
