@@ -9,8 +9,6 @@
 #define TXD2 17 // TX Pin for display communication
 
 // --- Wi-Fi Network Configurations ---
-
-
 const char* ssid = "YOUR_WIFI_NETWORK_NAME";    // Replace with your Wi-Fi network name (SSID)
 const char* password = "YOUR_WIFI_PASSWORD"; // Replace with your Wi-Fi password
 
@@ -32,9 +30,7 @@ const char* PROJECT_URLS[] = {
   "http://example.com/P48272-043T-L0101/demo4.lumen", // 8: Generic Demo 4 (Placeholder)
   "http://example.com/P48272-043T-L0101/demo5.lumen"  // 9: Generic Demo 5 (Placeholder)
 };
-const int NUM_PROJECT_URLS = sizeof(PROJECT_URLS) / sizeof(PROJECT_URLS[0]);
 
-// Change this index to select which project will be transferred (0 to NUM_PROJECT_URLS - 1)
 const int SELECTED_PROJECT_INDEX = 0; // Selects the first project by default
 
 // The active project URL is defined based on the selected index
